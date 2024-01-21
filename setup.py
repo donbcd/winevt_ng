@@ -23,10 +23,10 @@ def _build_ffi():
 
     # chdir so we know where we're importing from
     old_dir = os.path.abspath(os.curdir)
-    os.chdir(os.path.join(here,"winevt"))
+    os.chdir(os.path.join(here, 'winevt_ng'))
 
     # Apprently sdist doesn't have "." added by default?
-    sys.path.append(".")
+    sys.path.append('.')
 
     # Try compile it, but be OK with failure
     try:
@@ -34,51 +34,48 @@ def _build_ffi():
         from winevt_build import ffibuilder
 
         ffibuilder().compile(verbose=True)
-        shutil.copyfile(glob("_winevt.*.pyd")[0],"_winevt.pyd")
+        shutil.copyfile(glob('_winevt_ng.*.pyd')[0], '_winevt_ng.pyd')
+
+        logger.info('Successfully created own out-of-line pyd :)')
     except Exception as e:
-        pass
+        logger.warn('Unable to compile your own out-of-line pyd. Falling back to in-line mode. This is going to be less efficient.', e)
 
     # Put us back in our original directory
     os.chdir(old_dir)
-
-def _install_cffi():
-    # Major hack... I need cffi to do the transparent building
-    os.system('pip install cffi')
 
 
 class CustomBuildPyCommand(build_py):
     """ Handle generating pyd file but not erroring if we can't. """
     def run(self):
+        print("1")
         self.execute(_build_ffi, (), msg='Building ffi')
         build_py.run(self)
 
 class CustomInstallCommand(install):
     """ Handle generating pyd file but not erroring if we can't. """
     def run(self):
-        self.execute(_install_cffi, (), msg='Installing cffi')
+        print("2")
         self.execute(_build_ffi, (), msg='Building ffi')
         install.run(self)
 
 class CustomSdistCommand(sdist):
     """ Make sure we generate a new pyd when creating our sdist. """
     def run(self):
+        print("3")
         self.execute(_build_ffi, (), msg='Building ffi')
         sdist.run(self)
 
 
 # Get the long description from the README file
-#with open(path.join(here, 'README.md'), encoding='utf-8') as f:
-#    long_description = f.read()
-long_description = "See website for more info."
+with open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
 
 setup(
-    name='winevt',
-    version='0.0.11',
+    name='winevt_ng',
+    version='0.1.0',
     description='Script to programmatically interface with Windows Events.',
     long_description=long_description,
-    url='https://github.com/owlz/winevt',
-    author='Michael Bann',
-    author_email='self@bannsecurity.com',
+    url='https://github.com/schorschii/winevt_ng',
     license='MIT',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -88,18 +85,19 @@ setup(
         'Operating System :: Microsoft :: Windows',
         'Environment :: Console'
     ],
-    keywords='windows event evt evtx',
+    keywords='windows event log evt evtx',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    install_requires=["cffi>=1.0.0","untangle"],
-    #cffi_modules=["winevt/winevt_build.py:ffibuilder"],
+    install_requires=['cffi>=1.0.0', 'untangle'],
+    setup_requires=['cffi>=1.0.0', 'untangle'],
+    cffi_modules=['winevt_ng/winevt_build.py:ffibuilder'],
     extras_require={
         'dev': ['ipython'],
     },
     cmdclass={
         'install': CustomInstallCommand,
-        #'build_py': CustomBuildPyCommand,
+        'build_py': CustomBuildPyCommand,
         'sdist': CustomSdistCommand,
     },
-    package_data={'winevt': ['_winevt.pyd']},
+    package_data={'winevt_ng': ['_winevt_ng.pyd']},
 )
 

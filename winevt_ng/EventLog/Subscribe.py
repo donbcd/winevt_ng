@@ -252,6 +252,6 @@ class Subscribe(Session):
 
 from inspect import signature
 from .. import ffi, evtapi, out_of_line, get_last_error
-from winevt.EventLog.Event import Event
+from .Event import Event
 from .Bookmark import Bookmark
-import winevt.settings as settings
+from .. import settings

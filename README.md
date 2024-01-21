@@ -1,12 +1,14 @@
 # Overview
 This is a library to interact with the Windows Event Logging system. The focus is to interact directly with the Windows API, rather than parsing evt files. This will allow you to use python to parse events as well as subscribe to providers.
 
+It is a fork of the abandoned [bannsec/winevt](https://github.com/bannsec/winevt) with some fixes and improvements.
+
 # Install
-`winevt` can be installed directly as a package from pypi. I recommend you install it into a python virtual environment.
+`winevt_ng` can be installed directly as a package from pypi. I recommend you install it into a python virtual environment.
 
 ```bash
-$ mkvirtualenv --python=$(which python3) winevt # Optional
-(winevt)$ pip install winevt
+$ mkvirtualenv --python=$(which python3) winevt_ng # Optional
+(winevt_ng)$ pip install winevt_ng
 ```
 
 # Current Features
@@ -17,7 +19,7 @@ Currently, this library supports querying and subscribing to event logs or parsi
 Let's say you want to review the error report alerts that are in your Application event log. To print out all the times you dropped a dump file, you could do the following:
 
 ```python
-In [1]: from winevt import EventLog
+In [1]: from winevt_ng import EventLog
 
 In [2]: query = EventLog.Query("Application","Event/System/Provider[@Name='Windows Error Reporting']")
 
@@ -30,7 +32,7 @@ In [3]: for event in query:
 If you were interested in seeing every time you had an error or critical event from the System, you could do:
 
 ```python
-In [1]: from winevt import EventLog
+In [1]: from winevt_ng import EventLog
 
 In [2]: query = EventLog.Query("System","Event/System[Level<=2]")
 
@@ -42,7 +44,7 @@ In [3]: for event in query:
 Let's say you want to watch for new Errors and Critial events from the System log, and want to be able to take some form of immediate action. You can acomplish that through a subcription using a python function as your callback.
 
 ```python
-In [1]: from winevt import EventLog
+In [1]: from winevt_ng import EventLog
 
 In [2]: def handle_event(action, pContext, event):
    ...:     print("Got event: " + str(event))

@@ -189,7 +189,7 @@ void main()
 }
 """
 
-def ffibuilder(name="_winevt"):
+def ffibuilder(name="_winevt_ng"):
     """Do out-of-line build."""
 
     # Insantiate a class

@@ -176,5 +176,5 @@ class Query(Session):
 
 import os
 from .. import ffi, evtapi, kernel32, get_last_error
-from winevt.EventLog.Event import Event
+from .Event import Event
 from .Bookmark import Bookmark

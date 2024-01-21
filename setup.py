@@ -47,21 +47,18 @@ def _build_ffi():
 class CustomBuildPyCommand(build_py):
     """ Handle generating pyd file but not erroring if we can't. """
     def run(self):
-        print("1")
         self.execute(_build_ffi, (), msg='Building ffi')
         build_py.run(self)
 
 class CustomInstallCommand(install):
     """ Handle generating pyd file but not erroring if we can't. """
     def run(self):
-        print("2")
         self.execute(_build_ffi, (), msg='Building ffi')
         install.run(self)
 
 class CustomSdistCommand(sdist):
     """ Make sure we generate a new pyd when creating our sdist. """
     def run(self):
-        print("3")
         self.execute(_build_ffi, (), msg='Building ffi')
         sdist.run(self)
 

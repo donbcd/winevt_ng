@@ -72,6 +72,7 @@ setup(
     version='0.1.0',
     description='Script to programmatically interface with Windows Events.',
     long_description=long_description,
+    long_description_content_type='text/markdown',
     url='https://github.com/schorschii/winevt_ng',
     license='MIT',
     classifiers=[

@@ -1,7 +1,7 @@
 # Overview
 This is a library to interact with the Windows Event Logging system. The focus is to interact directly with the Windows API, rather than parsing evt files. This will allow you to use python to parse events as well as subscribe to providers.
 
-It is a fork of the abandoned [bannsec/winevt](https://github.com/bannsec/winevt) with some fixes and improvements.
+It is a fork of [schorschii/winevt_ng](https://github.com/schorschii/winevt_ng) which is a fork of the abandoned [bannsec/winevt](https://github.com/bannsec/winevt) with some fixes and improvements.
 
 # Install
 `winevt_ng` can be installed directly as a package from pypi. I recommend you install it into a python virtual environment.
